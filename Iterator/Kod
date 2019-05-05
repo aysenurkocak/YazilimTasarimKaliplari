@@ -1,0 +1,151 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace IteratorPattern
+{
+    // Item
+ 
+        public partial class S_Hepsi_Result
+        {
+            public int Id { get; set; }
+            public string DetayBilgi { get; set; }
+            public Nullable<decimal> ToplamUcret { get; set; }
+            public string OdemeTuru { get; set; }
+            public Nullable<System.DateTime> FaturaTarihi { get; set; }
+        }
+
+
+    // Iterator
+    // Nesne bütünü içerisindeki hareketlerin, yönlenmelerin gerçekleştirilebilmesi için gerekli operasyon arayüzünü tanımlar.
+    interface IS_Hepsi_ResultIterator
+    {
+        S_Hepsi_Result First();
+        S_Hepsi_Result MoveNext();
+        bool IsContinue { get; }
+        S_Hepsi_Result Current { get; }
+    }
+
+    // Aggregate
+    // Nesne bütününün, iterasyon için Concrete Iterator tipinden nesne örneği döndürecek bir metodunun olmasını söyler.
+    interface IS_Hepsi_ResultCollection
+    {
+        IS_Hepsi_ResultIterator GetIterator();
+    }
+
+    // Concrete Aggregate
+    // Nesne kümesini barındıran tipimiz.
+    class S_Hepsi_ResultCollection
+        : IS_Hepsi_ResultCollection
+    {
+        // S_Hepsi_Result topluluğunu saklamak için generic bir List<T> koleksiyonundan yardım alıyoruz.
+        private List<S_Hepsi_Result> list = new List<S_Hepsi_Result>();
+
+        // Ürün sayısını dışarıya vermek için kullanılan bir özellik
+        public int S_Hepsi_ResultCount
+        {
+            get { return list.Count; }
+        }
+
+        // Eleman eklemek ve okumak için kullanılan bir Indeksleyici
+        public S_Hepsi_Result this[int index]
+        {
+            get { return list[index]; }
+            set { list.Add(value); }
+        }
+
+        #region IS_Hepsi_ResultCollection Members
+
+        // Iterator nesnesini örnekler
+        public IS_Hepsi_ResultIterator GetIterator()
+        {
+            // Iterator nesnesi örneklenirken parametre olarak o andaki S_Hepsi_ResultCollection nesne örneği referans olarak gönderilir. 
+            // Bu sayede S_Hepsi_ResultIterator isimli Concrete Iterator nesne örneği, çalışma zamanında hangi nesne bütününü dolaşacağını bilecektir.
+            return new S_Hepsi_ResultIterator(this);
+        }
+
+        #endregion
+    }
+
+    // Concrete Iterator
+    // Nesne bütününün bir ucundan diğerine hareket edilebilmesine olanak sağlayacak fonksiyonellikleri uygulayan asıl Iterator tipi
+    class S_Hepsi_ResultIterator
+        : IS_Hepsi_ResultIterator
+    {
+        // Iterator nesne örneğinin, çalışma zamanında hangi nesne bütününü dolaşacağını bilmesi gerekmektedir. 
+        private S_Hepsi_ResultCollection _books;
+        private int _currentIndex = 0;
+        // İstemci isterse adım sayısını değiştirebilir. Örneğin ikişer ikişer atlanarak gidilmesi sağlanabilir,
+        public int StepSize { get; set; }
+
+        // bu nedenle yapıcı metoda parametre olarak, S_Hepsi_ResultCollection(Concrete Aggregate) nesne örneğinin referansı gelir. Bu referansın GetIterator metodu içerisindeki çağrı ile gönderildiğini hatırlayalım.
+        public S_Hepsi_ResultIterator(S_Hepsi_ResultCollection S_Hepsi_ResultCollection)
+        {
+            _books = S_Hepsi_ResultCollection;
+        }
+        #region IS_Hepsi_ResultIterator Members
+
+        // İlk elemana gidilmesini sağlayan metod
+        public S_Hepsi_Result First()
+        {
+            // Nerede olunduğunun takibi için _currentIndex değeri set edilir
+            _currentIndex = 0;
+            return _books[0];
+        }
+
+        // Bir sonraki elemana geçilmesini sağlayan metod
+        public S_Hepsi_Result MoveNext()
+        {
+            // Nerede olunduğunun takibi için _currentIndex değeri set edilir. Adım sayısı kadar arttırılır.
+            _currentIndex += StepSize;
+            if (IsContinue) // Eğer takip eden bir eleman var ise geri döndürülür
+                return _books[_currentIndex];
+            else
+                return null;
+        }
+
+        // Takip eden fatura olup olmadığını belirten read-only özellik
+        public bool IsContinue
+        {
+            get { return _currentIndex < _books.S_Hepsi_ResultCount; }
+        }
+
+        // O anki elemanı döndüren read-only özellik
+        public S_Hepsi_Result Current
+        {
+            get { return _books[_currentIndex]; }
+        }
+
+        #endregion
+    }
+
+
+
+
+
+
+
+
+    //main
+    S_Hepsi_ResultCollection S_Hepsi_Results = new S_Hepsi_ResultCollection();
+    S_Hepsi_Results = DbIslemlerim.S_Hepsi(0, 0, null, null).ToList().OrderByDescending(m=>m.FaturaTarihi);
+
+
+    // Iterator nesnesi S_Hepsi_Results isimli koleksiyonu kullanmak üzere oluşturulur
+    S_Hepsi_ResultIterator iterator = new S_Hepsi_ResultIterator(S_Hepsi_Results);
+
+    // Adım sayısı belirlenir
+    iterator.StepSize = 1;
+ 
+            // First ile ilk elemana konumlanılır.
+            // Koşul olarak IsContinue değerine bakılır
+            // İlerleme için MoveNext metodu kullanılır.
+            for (
+                S_Hepsi_Result S_Hepsi_Result = iterator.First()
+                    ; iterator.IsContinue
+                    ; S_Hepsi_Result = iterator.MoveNext()
+                    )
+            {
+                  
+                    bi.DataSource = S_Hepsi_Results;
+}
