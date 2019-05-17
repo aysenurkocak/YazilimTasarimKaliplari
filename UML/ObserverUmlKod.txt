@@ -1,0 +1,22 @@
+@startuml
+Interface Subject
+{
+ ChangeFatura()
+}
+
+class ConcrateSubject{
+  
+}
+
+Interface Observer{
+  
+ Update()
+}
+class ConcreteObserver
+{
+}
+
+Subject -> Observer
+ConcrateSubject -up--|> Subject
+ConcreteObserver-up--|> Observer
+@enduml
