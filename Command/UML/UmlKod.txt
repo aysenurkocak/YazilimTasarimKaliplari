@@ -1,0 +1,35 @@
+@startuml
+Interface IKomut
+{
+ {method} +Calistir(DataGridView gridFatura)
+}
+
+class ExcelKomut{
+  {method} +Calistir(DataGridView gridFatura)
+}
+
+class WordKomut{
+  {method} +Calistir(DataGridView gridFatura)
+}
+
+class invoker{
+ {method} +KomutEkle(IKomut c)
+ {method} +TumunuCalistir(DataGridView gridFatura)
+}
+
+object Kullanýcý
+class FaturaIslemleri{
+ {method} -btnExcel_Click(object sender, EventArgs e)
+ ...
+}
+
+
+IKomut <|-- ExcelKomut
+IKomut <|-- WordKomut
+ExcelKomut -down-> FaturaIslemleri
+WordKomut -down-> FaturaIslemleri
+Kullanýcý -right.>  FaturaIslemleri
+Kullanýcý  -left.> invoker
+
+invoker o-> IKomut
+@enduml

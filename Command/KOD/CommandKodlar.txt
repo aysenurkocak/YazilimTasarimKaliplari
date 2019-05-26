@@ -1,0 +1,116 @@
+using Microsoft.Office.Interop.Excel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Microsoft.Office.Interop.Word;
+namespace WindowsFormsApp1
+{
+    /// <summary>
+    /// Komut Tasarým Kalýbýný uygulamak için oluþturduðumuz sýnýftýr.
+    /// </summary>
+    /// 
+    public interface IKomut
+    {
+        void Calistir(DataGridView gridFatura);
+    }
+
+    /// <summary>
+    /// Veritabanýna eklediðimiz faturalarý filtreleme butonu ile belli kriterlere göre gridlerde gösteriyoruz.
+    /// Bu fonksiyon ile griddeki datalarý excel dosyasýna çýkartacaðýz.
+    /// </summary>
+   
+    public class ExcelKomut : IKomut
+    {
+        public void Calistir(DataGridView gridFatura)
+        {
+
+            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.Visible = true;
+            object Missing = Type.Missing;
+            Workbook workbook = excel.Workbooks.Add(Missing);
+            Worksheet sheet1 = (Worksheet)workbook.Sheets[1];
+            int StartCol = 1;
+            int StartRow = 1;
+            for (int j = 0; j < gridFatura.Columns.Count; j++)
+            {
+                Microsoft.Office.Interop.Excel.Range myRange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[StartRow, StartCol + j];
+                myRange.Value2 = gridFatura.Columns[j].HeaderText;
+            }
+            StartRow++;
+
+            for (int i = 0; i < gridFatura.Rows.Count; i++)
+            {
+                for (int j = 0; j < gridFatura.Columns.Count - 1; j++)
+                {
+
+                    Microsoft.Office.Interop.Excel.Range myRange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[StartRow + i, StartCol + j];
+                    myRange.Value2 = gridFatura[j, i].Value == null ? "" : gridFatura[j, i].Value;
+                    myRange.Select();
+
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Concrete Command Class
+    /// </summary>
+    public class WordKomut : IKomut
+    {
+        public void Calistir(DataGridView gridFatura)
+        {
+            Microsoft.Office.Interop.Word.Application WordUygulama = new Microsoft.Office.Interop.Word.Application();
+            Document WordDocument = WordUygulama.Documents.Add(Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+            //word'ü görünür yaptýk ve A4 formatýnda olduðunu belirttik
+            WordUygulama.Visible = true;
+            WordDocument.PageSetup.PaperSize = Microsoft.Office.Interop.Word.WdPaperSize.wdPaperA4;
+
+            //yazýnýn saða dayalý ve kalýn olmasýný belirttik..     WordUygulama.Selection.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+            WordUygulama.Selection.Font.Bold = (int)Microsoft.Office.Interop.Word.WdConstants.wdFirst;
+
+            //datagridview'deki verileri word e aktardýk.
+            for (int i = 0; i < gridFatura.Rows.Count; i++)
+            {
+                for (int j = 0; j < gridFatura.Columns.Count - 1; j++)
+                {
+                    WordUygulama.Selection.TypeText(gridFatura[j, i].Value.ToString() + " ");
+                }
+                WordUygulama.Selection.TypeParagraph();
+            }
+
+            string Wyol = @"C:\Users\Nur\" + DateTime.Now.ToShortDateString() + ".docx";
+            WordDocument.SaveAs(Wyol, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+
+        }
+    }
+    public class Invoker
+    {
+        private Stack<IKomut> KomutListesi = new Stack<IKomut>();
+
+        public void TumunuCalistir(DataGridView gridFatura)
+        {
+            while (KomutListesi.Count > 0)
+                KomutListesi.Pop().Calistir(gridFatura);
+        }
+
+        public void KomutEkle(IKomut c)
+        {
+            KomutListesi.Push(c);
+        }
+    }
+}
+
+//Kod içinde örnek çaðýrýmý
+
+ private void btnExcel_Click(object sender, EventArgs e)
+        {
+            Invoker invoker = new Invoker();
+            invoker.KomutEkle(new ExcelKomut());
+            invoker.KomutEkle(new WordKomut());
+            invoker.TumunuCalistir(gridFatura);
+        }
