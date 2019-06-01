@@ -1,0 +1,82 @@
+== YAZILIM TASARIM KALIPLARI
+=== Hastane Otomasyon Projesi Anlatım Necip BİÇER 150202064
+==== 1.Singleton Pattern
+
+
+Benim projem hastane otomasyonudur.Singleton kalıbını    otomasyonumdaki adminlerin sadece kopya nesneler üzerinden işlem yapmasını sağlamak için kullandım.Adminler Üye sayılarını ve randevu tarihlerini değiştirebilir.Fakat bu değişim diğer adminler tarafından da algılanır.Yani hangi admin değiştirirse diğer adminler de bu değişimi fark eder.
+
+==== 2.Factory Pattern
+
+Hastane otomasyonumuzda kişiler otomasyona giriş yaptıklarında kimliklerini girerler.Eğer doktorsanız ünvanınızı doktor,hasta iseniz ünvanınızı hasta girersiniz.Böylece siz sadece ünvanınızı girerek nesne oluşturmak için bir komut yazmadan nesneniz oluşmuş olur.Yani otomasyon sizin yerinize nesneyi oluşturup sizin daha iyi bir kullanım keyfi sürmenizi sağlar.
+
+==== 3.Builder Pattern
+
+Biz hastane olarak bazı bilgileri tutmak zorundayız.Sizler kayıt olurken bizim sizden istediğimiz verileri girmeniz gerekir.Fakat bazıları zorunludur bazıları ise isteğinize bağlıdır.Builder Patterni kullanarak isminizi ve soyisminizi girmenizi zorunlu tutup adres,yaş ve telefon gibi bilgilerinizi ise sizin tercihinize bıraktık.Veritabanı kayıtları tutmak için kullanılması mümkün olan bu tasarım kalıbı sizlere daha iyi hizmet verebilmek için kullanılmıştır.
+
+==== 4.Prototype Pattern
+Bizim hastane veritabanında bazı kullanıcılar tekrar etmektedir.Yani bir hasta tekrar başvurup hastanemizde muayene olabilir.Tekrar kullanıcının bilgilerini girmesi yerine,biz Prototype tasarım kalıbı ile aynı kişiyi kopyalıyoruz(clone).Böylece tekrarı önleyip;istersek kopya kayıtlar üzerinde farklı işlemleri de deneyebiliriz.
+
+==== 5.Abstract Factory Pattern
+
+Hastane otomasyonumuzda kişiler otomasyona giriş yaptıklarında kimliklerini girerler.Eğer doktorsanız ünvanınızı doktor,hasta iseniz ünvanınızı hasta girersiniz.Böylece siz sadece ünvanınızı girerek nesne oluşturmak için bir komut yazmadan nesneniz oluşmuş olur.Yani otomasyon sizin yerinize nesneyi oluşturup sizin daha iyi bir kullanım keyfi sürmenizi sağlar.
+
+==== 6.Iterator Factory Pattern
+Otomasyonumuz sadece müşterilerimize hizmet vermemektedir.Ayrıca hastanemizde bulunan çalışanları da kaydedip eklediğimiz sıra ile de görüntülüyor.Bu kalıbı kullanmamız en büyük sebebi budur.Hastanemizde çalışanların verilerini görüntülemek,kontrol etmek,otomasyonda sıra ile gezinmek için kullandık.
+
+==== 7.Observer Pattern
+
+Otomasyonumuzun sadece müşterilere hizmet vermediğini söylemiştik.Biz herhangi bir günde çalışan doktorları oturuma alıp onları yönlendiriyoruz.Yani ameliyatı olan doktorları ameliyat oturumuna alıp onları tek bir ağızdan bilgilendirip ameliyata çağrılmalarını sağlıyoruz.
+
+==== 8.Command Pattern
+
+Otomasyonumuza kumanda ile erişip adminlerin oturdukları yerden butonları kullanarak bilgisayar başında olmadan güncelleme,onaylama,iptal etme isteklerini kumanda ile yönetebilmelerini sağladık.
+
+=== 9.Memento Pattern
+
+Otomasyonumuz son kullanıcıya bağlı olarak bir link liste gibi tutar kullanıcıları.Kullanıcılar üzerinde işlemleri bitenleri silerek geriye doğru kullanıcıları siliyoruz.Böylece kullanıcılarımızı güncel olarak tutmayı sağlıyoruz.
+
+=== 10.Adapter Pattern
+
+Bilindiği üzere doktorlar da hasta olabilir.Bizde bunu düşünerek doktorlarımızında istedikleri halde randevu alıp randevularını iptal edebilirler.Sisteme yeni bir randevu kayıdı açmak yerine doktor olarak sisteme girip hasta gibi davranabiliyor.Bu tasarım kalıbı bunu sağlıyor.İsminden de anlaşıldığı gibi dönüştürücü olarak kullanıyoruz.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
