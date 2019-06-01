@@ -1,0 +1,18 @@
+@startuml
+class FaturaEkle{
++ void btnKaydet_Click()
+}
+class LogGoster<<virtual>>{
++ void txtKaydet()
+}
+class logKaydet{
++ void LogKayit()
+}
+class Adapter{
++ {override} void txtKaydet()
+
+} 
+FaturaEkle-> LogGoster : catch{LogGoster}
+Adapter-|> LogGoster
+Adapter--> logKaydet
+@enduml
