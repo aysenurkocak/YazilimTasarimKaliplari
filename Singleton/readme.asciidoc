@@ -1,0 +1,22 @@
+==== SİNGLETON
+
+İçerek yönetim sistemi olarak oluşturduğumuz projemizde sql server'a pek çok yerde bağlantı yapacağız.
+farklı formlar veya aynı form içindeki farklı metodlarda  ayrı ayrı nesne
+oluşturup sürekli nesne yaratmak kaynak tüketimini  arttıracağı için daha efektif bir sistem tasarlamak adına singleton tasarım 
+desenin yardımıyla bağlantı açma ve kapatma işlemlerini tek bir nesne üzerinden açıp kapatıyoruz;
+
+Veritabani.cs SqlConnectionfonksiyonunda db nesnesi olusturulmus ise eski degeri gönderir, olusturulmamis ise tanimalama islemini yapar.
+
+Sql bağlantısı açma ihtiyacımız olduğunda da 
+
+```c#
+
+Veritabani.veritabaninaBaglan.Open()
+
+```
+
+şeklinde tanımlama yapmadan bağlantı açabiliriz, klasördeki kodlarda detayları mevcuttur.
+
+Singleton Uml ;
+
+image::Singleton.png[align="center"] 
