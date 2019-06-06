@@ -1,16 +1,9 @@
 using System;
-using System.Drawing;
-using System.Windows.Forms;
 using MetroFramework.Forms;
 using System.Data;
-using MetroFramework.Controls;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
-using System.Windows.Forms.VisualStyles;
-using Microsoft.Office.Interop.Excel;
 using System.Data.SqlClient;
-
 
 namespace WindowsFormsApp1
 {
@@ -18,22 +11,13 @@ namespace WindowsFormsApp1
     {
         private DataSet ds = new DataSet();
         System.Data.DataTable dt = new System.Data.DataTable();
-        public event EventHandler SettingClosed;
-        public static int sayac;
-        public AnaForm()
-        {
-            sayac = 0;
-            StyleManager = msmMain;
-            InitializeComponent();
-        }
 
-        private void AnaForm_Load(object sender, EventArgs e)
-        {
-            GrafikOlustur();
-        }
 
         public void GrafikOlustur()
         {
+        
+        //Veritabanı.Cs de oluşturduğumuz singleton yapısını burada kullanıyoruz, tanımlamadan direkt .
+        
             SqlCommand cmd = new SqlCommand("S_Grafik", Veritabani.veritabaninaBaglan);
             cmd.CommandType = CommandType.StoredProcedure;
             Veritabani.veritabaninaBaglan.Open();
