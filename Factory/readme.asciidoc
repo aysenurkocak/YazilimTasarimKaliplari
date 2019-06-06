@@ -1,0 +1,38 @@
+==== FACTORY
+
+İletişim,Konaklama,Yemek ve Malzeme olarak farklı tipte faturalarımız var, projemizde bu farklı tipteki faturaları db ye kaydetmek ve göstermek 
+olası farklı alanlar durumunda benzer işler yaptırmak ve efektif bir şekilde kullanmak için factory pattern kullanıyoruz.
+
+FaturaIslemleri.cs de türeteceğimiz abstract class’ı dizayn ettik, 
+
+Sql bağlantısı açma ihtiyacımız olduğunda da 
+
+```c#
+
+ abstract class Fatura
+    {
+        public abstract S_Fatura_Result Getir(S_Fatura_Result fatura);
+    }
+    
+    class Malzeme : Fatura
+    {
+        public override S_Fatura_Result Getir(S_Fatura_Result fatura)
+        {
+            fatura.Type = 1;
+            return fatura;
+        }
+    }
+    ....
+
+```
+
+devamı klasördeki kodlarda mevcuttur.
+
+ Fatura Iletisim = FaturaBilgisi.FactoryMethod(FaturaTipleri.İletisim);
+ S_Fatura_Result YeniFatura = Iletisim.Getir(F);
+ şeklinde db ye fatura kaydederken de kullanıyoruz.
+ 
+
+Uml ;
+
+image::https://github.com/aysenurkocak/YazilimTasarimKaliplari/blob/master/UML/FactoryUML.png[align="center"] 
