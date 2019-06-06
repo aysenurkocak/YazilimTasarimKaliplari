@@ -1,53 +1,32 @@
-EN ÇOK KULLANILAN YAZILIM MİMARİLERİ
+İnşaat Firması Fatura Yönetim Sistemi
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Yazılım kodlarınızın her bölümünü en iyi mimari ile optimize etmek için tek bir sistemde birden fazla kalıbı kullanabilir.
+==== 1.Singleton Pattern
+İçerik yönetim sistemi olarak hazırlanmış windows form projemizde 10 kusur kalem fatura türü bulunmaktadır her birinin de alanları farklıdır ortak alanlar da vardır.
+Projemizde her formda ortak olarak bulunan başlangıç ve bitiş tarihi alanlarını veritabanında kaydedilmek üzere Türkiye için formatladık, ekleme güncelleme tarihlerinde ve sistemdeki log hatalarında kullanmak üzere 
 
-1) Katmanlı (n-katmanlı) mimari
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Bu yaklaşım muhtemelen en yaygın olanıdır. Java EE, Drupal ve Express gibi en büyük ve en iyi yazılım çerçevelerinin çoğu, bu yapı göz önüne alındığında inşa edildiğinden, onlarla oluşturulan pek çok uygulama doğal olarak katmanlı bir mimaride ortaya çıkmaktadır.
+==== 2.Factory Pattern
 
-Popüler web çerçevelerinin çoğunun sunduğu standart yazılım geliştirme yaklaşımı olan Model-View-Controller(MVC) yapısı açıkça katmanlı bir mimaridir.
-Katmanlı mimaride uygulamalar ayrı katmanlar halinde yazıldığından, yönetilebilmesi ve  değiştirilmesi oldukça kolay ve hızlıdır.
+==== 3.Builder Pattern
 
-* Presentation Layer : Yapılan uygulamanın kullanıcı arayüzüne ait projeler bu katmanda oluşturulur.
-* Business Layer : Uygulamanın iş mantığı, Veritabanına ait oprasyonel(CRUD) işlemler , kullanıcı rolleri tanımlanır.
-* Data Access Layer :  Sadece Veritabanına erişimi sağlamakla sorumlu katmandır.Her veritabanı için ayrı bir veriye erişim sınıfını içerebilir.
+Faturalar için ne kadar ücret harcanmış bunu kullanıcının görmesi için anaforma eklediğim grafikte Builder Pattern kullanıyorum. Veritabanından faturaları alıp gösteriyorum.
 
+==== 4.Prototype Pattern
+Asya inşaata ait 12 kalem fatura giderlerinin kaydını tuttuğumuz projemizde (yemek, kira, vergi vs) Id,ödeme tipi, fatura tutarı, tarihi alanları ortaktır.Diğer fatura tipleri bu genel prototipten türeyecektir.
+==== 5.Abstract Factory Pattern
+Faturala tipini girerek nesne oluşturmak için bir komut yazmadan nesneniz oluşmuş olur.Yani otomasyon sizin yerinize nesneyi oluşturur.
 
-```c++
-int main() {
-    double a,b;
-    cout << "Birinci Sayi : ";
-    cin >> a;
-    cout << "Ikinci Sayi : ";
-    cin >> b;
-    cout << "Toplam : " << a+b;
-    system("PAUSE");
-    return 0;
-}
-```
+==== 7.Observer Pattern
 
+Yeni bir fatura kaydedildiğinde sistemde tanımlı mail adresine bilgi gönderiyoruz.
 
-WARNING: Yazılımlarda katman sayısı arttıkça performans düşer.
+==== 8.Command Pattern
 
-CAUTION: Yönetim zorlaşır.
+Faturaları filtreleyip gridde gösteriyoruz. Bu gridden verileri alıp excel yahut word çıktısı olarak kullanıcıya sunmak için Command Pattern kullandım.
 
-IMPORTANT: Büyük bir sistemde ağ güvenliğini yönetmek zor olabilir.
+=== 9.Memento Pattern
 
+=== 10.Adapter Pattern
+Kodlarımız try catch içinde yazdık catch durumunda hatayı c klasörü altındaki log dosyamıza atıyoruz, hemde messagebox ile kullanıcıya bildiriyoruz.
+tasarım kalıbını  dönüştürücü olarak kullanıyoruz, log ve mesaj 
 
-.Dünyada En Çok Kullanılan Programlama Dilleri
-[width="100%",options="header,footer"]
-|====================
-| 1 |%90|  Java
-| 2 |%80|Python
-| 3 |%70|JavaScript
-| 2 |%60|C++ 
-| 3 |%50|c#
-|====================
-
-
-image::https://github.gallerycdn.vsassets.io/extensions/github/vscode-pull-request-github/0.4.0/1549568526519/Microsoft.VisualStudio.Services.Icons.Default[GithuB]
-
-video::Gs8wX7VyAgw[youtube]
-
-link:https://docs.microsoft.com/tr-tr/azure/architecture/guide/architecture-styles/n-tier[Kaynakça]
+AYŞENUR KOÇAK 160202124
