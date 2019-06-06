@@ -19,4 +19,4 @@ Veritabani.veritabaninaBaglan.Open()
 
 Singleton Uml ;
 
-image::Singleton.png[align="center"] 
+image::Uml/Singleton.png[align="center"] 
