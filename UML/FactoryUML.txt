@@ -1,0 +1,23 @@
+@startuml
+class Fatura <<virtual>>{
++ Getir(S_Fatura_Result fatura) : S_Fatura_Result
+}
+
+class Malzeme {
++ Getir(S_Fatura_Result fatura) : S_Fatura_Result
+}
+class Yemek{
++ Getir(S_Fatura_Result fatura) : S_Fatura_Result
+}
+class Iletisim{
++ Getir(S_Fatura_Result fatura) : S_Fatura_Result
+}
+class Konaklama{
++ Getir(S_Fatura_Result fatura) : S_Fatura_Result
+}
+
+Malzeme -up-> Fatura
+Yemek -up-> Fatura 
+Iletisim -up-> Fatura 
+Konaklama -up-> Fatura
+@enduml
