@@ -17,6 +17,6 @@ Veritabani.veritabaninaBaglan.Open()
 
 şeklinde tanımlama yapmadan bağlantı açabiliriz, klasördeki kodlarda detayları mevcuttur.
 
-Singleton Uml ;
+Uml ;
 
-image::Uml/Singleton.png[align="center"] 
+image::https://github.com/aysenurkocak/YazilimTasarimKaliplari/blob/master/UML/Singleton.png[align="center"] 
