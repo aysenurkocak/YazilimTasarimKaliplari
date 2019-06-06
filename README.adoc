@@ -1,5 +1,5 @@
-İnşaat Firması Fatura Yönetim Sistemi
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=İnşaat Firması Fatura Yönetim Sistemi
+
 ==== 1.Singleton Pattern
 İçerik yönetim sistemi olarak hazırlanmış windows form projemizde 10 kusur kalem fatura türü bulunmaktadır her birinin de alanları farklıdır ortak alanlar da vardır.
 Projemizde her formda ortak olarak bulunan başlangıç ve bitiş tarihi alanlarını veritabanında kaydedilmek üzere Türkiye için formatladık, ekleme güncelleme tarihlerinde ve sistemdeki log hatalarında kullanmak üzere 
