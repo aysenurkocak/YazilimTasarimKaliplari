@@ -1,32 +1,137 @@
-=İnşaat Firması Fatura Yönetim Sistemi
 
-==== 1.Singleton Pattern
-İçerik yönetim sistemi olarak hazırlanmış windows form projemizde 10 kusur kalem fatura türü bulunmaktadır her birinin de alanları farklıdır ortak alanlar da vardır.
-Projemizde her formda ortak olarak bulunan başlangıç ve bitiş tarihi alanlarını veritabanında kaydedilmek üzere Türkiye için formatladık, ekleme güncelleme tarihlerinde ve sistemdeki log hatalarında kullanmak üzere 
+= İnşaat Firması Fatura Yönetim Sistemi 
 
-==== 2.Factory Pattern
 
-==== 3.Builder Pattern
+image::UML\UseCase.png[align="center"] 
 
-Faturalar için ne kadar ücret harcanmış bunu kullanıcının görmesi için anaforma eklediğim grafikte Builder Pattern kullanıyorum. Veritabanından faturaları alıp gösteriyorum.
+Projemiz bir inşaat firmasının fatura bilgilerinin saklandığı bir içerik yönetim sistemidir,aşağıdaki farklı tasarım kalıplarını projemizde uygulamaya çalıştık.
 
-==== 4.Prototype Pattern
-Asya inşaata ait 12 kalem fatura giderlerinin kaydını tuttuğumuz projemizde (yemek, kira, vergi vs) Id,ödeme tipi, fatura tutarı, tarihi alanları ortaktır.Diğer fatura tipleri bu genel prototipten türeyecektir.
-==== 5.Abstract Factory Pattern
+
+image::UML\UML_Proje.png[align="center"] 
+
+==== Singleton
+
+İçerek yönetim sistemi olarak oluşturduğumuz projemizde sql server'a pek çok yerde bağlantı yapacağız.
+farklı formlar veya aynı form içindeki farklı metodlarda  ayrı ayrı nesne
+oluşturup sürekli nesne yaratmak kaynak tüketimini  arttıracağı için daha efektif bir sistem tasarlamak adına singleton tasarım 
+desenin yardımıyla bağlantı açma ve kapatma işlemlerini tek bir nesne üzerinden açıp kapatıyoruz;
+
+Veritabani.cs SqlConnectionfonksiyonunda db nesnesi olusturulmus ise eski degeri gönderir, olusturulmamis ise tanimalama islemini yapar.
+
+Sql bağlantısı açma ihtiyacımız olduğunda da 
+
+```c#
+
+Veritabani.veritabaninaBaglan.Open()
+
+```
+
+şeklinde tanımlama yapmadan bağlantı açabiliriz, klasördeki kodlarda detayları mevcuttur.
+
+Singleton Uml ;
+
+image::UML\Singleton.png[align="center"] 
+
+==== Factory
+
+İletişim,Konaklama,Yemek ve Malzeme olarak farklı tipte faturalarımız var, projemizde bu farklı tipteki faturaları db ye kaydetmek ve göstermek 
+olası farklı alanlar durumunda benzer işler yaptırmak ve efektif bir şekilde kullanmak için factory pattern kullanıyoruz.
+
+FaturaIslemleri.cs de türeteceğimiz abstract class’ı dizayn ettik, 
+
+Sql bağlantısı açma ihtiyacımız olduğunda da 
+
+```c#
+
+ abstract class Fatura
+    {
+        public abstract S_Fatura_Result Getir(S_Fatura_Result fatura);
+    }
+    
+    class Malzeme : Fatura
+    {
+        public override S_Fatura_Result Getir(S_Fatura_Result fatura)
+        {
+            fatura.Type = 1;
+            return fatura;
+        }
+    }
+    ....
+
+```
+
+devamı klasördeki kodlarda mevcuttur.
+
+ Fatura Iletisim = FaturaBilgisi.FactoryMethod(FaturaTipleri.İletisim);
+ S_Fatura_Result YeniFatura = Iletisim.Getir(F);
+ şeklinde db ye fatura kaydederken de kullanıyoruz.
+ 
+
+Uml ;
+
+image::UML\FactoryUML.png[align="center"] 
+
+==== Builder Pattern
+
+Birbirinden farklı özelliklere sahip fatura üretecek bir yapı oluşturmak istiyoruz.
+Product nesnemiz Faturalar, birbirlerinden farklı özellik teşkil edecek olan tüm sınıflarımız ConcreteBuilder sınıfımız olacaktır.
+
+Builder.cs de tanımlı olan kodlar ekleme fonksiyonunda aşağıdaki gibi kullanılır. 
+
+```c#
+
+ IFaturaBuilder fatura = new KiraConcreteBuilder();
+                    FaturaUret uret = new FaturaUret();
+                    uret.Uret(fatura);
+                    fatura = new İletisimConcreteBuilder();
+    ....
+
+```
+
+image::UML\BuilderUML.png[align="center"] 
+
+==== Prototype Pattern
+
+Bu pattern ile nesnelerimizi prototip olarak kullanabiliriz.Nesnemizi kopyalayıp istediğimiz şekilde üzerinde işlem yapıp sonrasında yok edebiliriz.
+Oluşturduğumuz soyut sınıfımızdan türetilen odeme sınıfı Clone metodunu implement ediyor. O anki nesnenin MemberwiseClone metodu ile bir kopyası oluşturularak “PrototypeOdeme” tipinde geri gönderiyor.
+
+image::UML\Prototype.png[align="center"] 
+
+
+
+==== Abstract Factory Pattern
 Faturala tipini girerek nesne oluşturmak için bir komut yazmadan nesneniz oluşmuş olur.Yani otomasyon sizin yerinize nesneyi oluşturur.
 
-==== 7.Observer Pattern
+image::UML\Afactory.png[align="center"] 
+
+
+==== Observer Pattern
 
 Yeni bir fatura kaydedildiğinde sistemde tanımlı mail adresine bilgi gönderiyoruz.
 
-==== 8.Command Pattern
+image::UML\Observer.png[align="center"] 
+
+
+==== Command Pattern
 
 Faturaları filtreleyip gridde gösteriyoruz. Bu gridden verileri alıp excel yahut word çıktısı olarak kullanıcıya sunmak için Command Pattern kullandım.
 
-=== 9.Memento Pattern
+image::UML\CommantUML.png[align="center"] 
 
-=== 10.Adapter Pattern
+=== Adapter Pattern
 Kodlarımız try catch içinde yazdık catch durumunda hatayı c klasörü altındaki log dosyamıza atıyoruz, hemde messagebox ile kullanıcıya bildiriyoruz.
 tasarım kalıbını  dönüştürücü olarak kullanıyoruz, log ve mesaj 
 
-AYŞENUR KOÇAK 160202124
+image::UML\AdapterUML.png[align="center"] 
+
+=== Iterator Pattern
+
+Anaformda faturalara ne kadar ücret ödenmiş bunu kullanıcıya göstermek amacıyla yaptığımız grafikte kullanıyoruz.
+
+image::UML\IteratorUML.png[align="center"] 
+
+= Ayşe Nur Koçak - 160202124
+
+image::ProgramGorsel.JPG[align="center"] 
+
+
